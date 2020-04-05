@@ -49,6 +49,24 @@ app.post('/register',function(req,res){
     });
 
 
+
+    app.post('/makeannouncement',function(req,res){
+        
+        Announcement.create(new Announcement({title:req.body.title,content:req.body.content}),function(err,announcement){
+            if(err){
+                res.status(300).send({err:err})
+            }
+            res.send(announcement);
+        })
+    });
+
+    app.get('/announcements',function(req,res){
+        Announcement.find({},function(err,announcements){
+            res.send(announcements);
+        })
+    })
+
+
 app.listen(PORT,function(err){
     if(err)
     console.log(err);
