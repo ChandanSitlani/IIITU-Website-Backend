@@ -55,6 +55,12 @@ app.post('/register',function(req,res){
         })
     })
 
+    app.get('/getusers',function(req,res){
+        User.find({},function(err,users){
+            res.send(users);
+        })
+    })
+
 
 
     app.post('/makeannouncement',function(req,res){
