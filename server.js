@@ -49,6 +49,13 @@ app.post('/register',function(req,res){
     });
 
 
+    app.post('/login',function(req,res){
+        passport.authenticate("local",{failureRedirect:'/'})(req,res,function(){
+            res.send({_id:req.user._id,role:req.user.role})
+        })
+    })
+
+
 
     app.post('/makeannouncement',function(req,res){
         
