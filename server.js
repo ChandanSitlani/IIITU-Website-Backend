@@ -38,7 +38,12 @@ app.get('/',function(req,res){
 })
 
 app.post('/register',function(req,res){
-    User.register( new User({name:req.body.name,email:req.body.email,username:req.body.username}),req.body.password,function(err,user){
+    User.register( new User({
+        name:req.body.name,
+        email:req.body.email,
+        role:req.body.role,
+        username:req.body.username
+    }),req.body.password,function(err,user){
         if(err){
             return res.status(300).send(err);}
         passport.authenticate("local")(req,res,function(){

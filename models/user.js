@@ -5,6 +5,7 @@ var mongoose=require('mongoose'),
         name:{type:String},
         username:{type:String},
         email:{type:String},
+        role:{type:String},
         gender:{type:String}
     })
 
