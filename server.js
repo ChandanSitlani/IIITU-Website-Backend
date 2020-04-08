@@ -4,12 +4,23 @@ var express=require('express'),
     mongoose=require('mongoose'),
     LocalStrategy=require('passport-local'),
     bodyParser=require('body-parser'),
+    multer=require('multer'),
     passportLocalMongoose=require('passport-local-mongoose'),
     app=express();
 
 var PORT=3000;
 
 
+var storage=multer.diskStorage({
+    
+    destination:'static/uploads/',
+    filename:function(req,file,cb){
+    cb(null,file.originalname);
+}
+})
+var upload=multer({storage:storage}
+
+);
 mongoose.connect('mongodb+srv://iiitu:iiitu@cluster0-vmrin.mongodb.net/test?retryWrites=true&w=majority');
 var db=mongoose.connection;
 
@@ -18,7 +29,7 @@ db.on('open',function(){
     console.log('connected to db:Server');
 })
 
-
+app.use(express.static('static'));
 
 
 var User=require('./models/user'),
@@ -68,9 +79,11 @@ app.post('/register',function(req,res){
 
 
 
-    app.post('/makeannouncement',function(req,res){
+    app.post('/makeannouncement',upload.single('file'),function(req,res){
         
         Announcement.create(new Announcement({title:req.body.title,content:req.body.content}),function(err,announcement){
+            console.log(req.body);
+            console.log(req.file);
             if(err){
                 res.status(300).send({err:err})
             }
@@ -81,6 +94,17 @@ app.post('/register',function(req,res){
     app.get('/announcements',function(req,res){
         Announcement.find({},function(err,announcements){
             res.send(announcements);
+        })
+    });
+
+    app.post('/deleteannouncement',function(req,res){   
+        Announcement.findOneAndRemove({_id:req.body._id},function(err,announcement){
+            //console.log(req.body)
+            //console.log(announcement)
+            if(err)
+            res.status(300).send(err);
+            else
+            res.send({mas:'ok'});
         })
     })
 
