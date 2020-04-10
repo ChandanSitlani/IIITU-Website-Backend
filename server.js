@@ -18,9 +18,7 @@ var storage=multer.diskStorage({
     cb(null,file.originalname);
 }
 })
-var upload=multer({storage:storage}
-
-);
+var upload=multer({storage:storage});
 mongoose.connect('mongodb+srv://iiitu:iiitu@cluster0-vmrin.mongodb.net/test?retryWrites=true&w=majority');
 var db=mongoose.connection;
 
@@ -81,12 +79,13 @@ app.post('/register',function(req,res){
 
     app.post('/makeannouncement',upload.single('file'),function(req,res){
         
-        Announcement.create(new Announcement({title:req.body.title,content:req.body.content}),function(err,announcement){
+        Announcement.create(new Announcement({title:req.body.title,content:req.body.content,documentUrl:'uploads/'+req.file.filename}),function(err,announcement){
             console.log(req.body);
             console.log(req.file);
             if(err){
                 res.status(300).send({err:err})
             }
+            else
             res.send(announcement);
         })
     });
