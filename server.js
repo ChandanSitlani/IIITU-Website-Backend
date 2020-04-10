@@ -8,7 +8,7 @@ var express=require('express'),
     passportLocalMongoose=require('passport-local-mongoose'),
     app=express();
 
-var PORT=3000;
+var PORT=process.env.PORT||3000;
 
 
 var storage=multer.diskStorage({
