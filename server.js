@@ -5,6 +5,7 @@ var express=require('express'),
     LocalStrategy=require('passport-local'),
     bodyParser=require('body-parser'),
     multer=require('multer'),
+    fs=require('fs',)
     passportLocalMongoose=require('passport-local-mongoose'),
     app=express();
 
@@ -104,6 +105,15 @@ app.post('/register',function(req,res){
             res.status(300).send(err);
             else
             res.send({mas:'ok'});
+        })
+    })
+
+    app.get('/images',function(req,res){
+        fs.readdir('./static/images',function(err,files){
+            if(err)
+            res.status(300).send({err:err});
+            else
+            res.send({files:files})
         })
     })
 
